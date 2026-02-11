@@ -244,7 +244,30 @@
                 flex-direction: column;
             }
         }
-    </style>
+    
+/* --- Results snapshot --- */
+.results-snapshot { margin: 1.25rem 0 2rem; }
+.results-snapshot .muted { color: var(--muted); margin-top: 0.25rem; }
+.results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.metric-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1rem 0.75rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+}
+.card-title { font-weight: 700; margin-bottom: 0.75rem; }
+.metric-row { display:flex; justify-content:space-between; padding: 0.35rem 0; border-bottom: 1px dashed rgba(255,255,255,0.08); font-variant-numeric: tabular-nums; }
+.metric-row:last-child { border-bottom: none; }
+.callout {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-left: 4px solid var(--accent);
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  color: var(--text);
+}
+
+</style>
 </head>
 <body>
     <nav class="nav">
@@ -323,6 +346,36 @@
         
         <div class="section">
             <h2>Key Findings</h2>
+
+        <div class="results-snapshot">
+          <h3>Results Snapshot</h3>
+          <p class="muted">All numbers below are from the notebook backtest run (train: 2014–2020, test: 2021–2025). Metrics are annualized; exposure is the average fraction of time the strategy is in the market.</p>
+
+          <div class="results-grid">
+            <div class="metric-card">
+              <div class="card-title">In-sample (train)</div>
+              <div class="metric-row"><span>Sharpe</span><span><strong>0.80</strong></span></div>
+              <div class="metric-row"><span>Active Sharpe (vs SPX)</span><span><strong>0.78</strong></span></div>
+              <div class="metric-row"><span>Annual return</span><span><strong>0.49</strong></span></div>
+              <div class="metric-row"><span>Max drawdown</span><span><strong>-0.08</strong></span></div>
+              <div class="metric-row"><span>Exposure</span><span><strong>4.76%</strong></span></div>
+            </div>
+
+            <div class="metric-card">
+              <div class="card-title">Out-of-sample (test)</div>
+              <div class="metric-row"><span>Sharpe</span><span><strong>1.19</strong></span></div>
+              <div class="metric-row"><span>Active Sharpe (vs SPX)</span><span><strong>0.95</strong></span></div>
+              <div class="metric-row"><span>Annual return</span><span><strong>0.23</strong></span></div>
+              <div class="metric-row"><span>Max drawdown</span><span><strong>-0.07</strong></span></div>
+              <div class="metric-row"><span>Exposure</span><span><strong>4.15%</strong></span></div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Interpretation:</strong> the strategy is <em>very low-exposure</em> (≈4–5% of days). That can make headline Sharpe look attractive, but it also means results are driven by a small number of “risk-on” windows. The main value of this project was learning how sensitive option backtests are to implementation details (timing, annualization, and hidden lookahead).
+          </div>
+        </div>
+
             
             <div class="results-grid">
                 <div class="result-card">
