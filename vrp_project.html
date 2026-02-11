@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variance Risk Premium Strategy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .nav {
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 0;
+            margin-bottom: 40px;
+        }
+        
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 60px 20px;
+        }
+        
+        header {
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        
+        .meta {
+            display: flex;
+            gap: 30px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .tech-tag {
+            background: #e9ecef;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #495057;
+        }
+        
+        .overview {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+        
+        .overview h2 {
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        
+        .overview p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            font-size: 1.3em;
+            margin: 25px 0 15px 0;
+            color: #333;
+        }
+        
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .section li {
+            padding-left: 24px;
+            margin-bottom: 12px;
+            position: relative;
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .section li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #007bff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .highlight-box strong {
+            color: #1a1a1a;
+        }
+        
+        .code-snippet {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .result-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .result-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        
+        .result-card .label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 2px solid;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #007bff;
+            border-color: #007bff;
+        }
+        
+        .btn-secondary:hover {
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html">← Back to Projects</a>
+            <a href="https://github.com/yourusername" target="_blank">GitHub Profile</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header>
+            <h1>Variance Risk Premium Strategy</h1>
+            <div class="meta">
+                <span>📅 January 2025</span>
+                <span>📊 15 years of data (2010-2025)</span>
+                <span>⚡ Python / Pandas / NumPy</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Pandas</span>
+                <span class="tech-tag">NumPy</span>
+                <span class="tech-tag">Matplotlib</span>
+                <span class="tech-tag">Seaborn</span>
+                <span class="tech-tag">yfinance</span>
+            </div>
+        </header>
+        
+        <div class="overview">
+            <h2>Project Overview</h2>
+            <p>
+                This project explores the <strong>Variance Risk Premium (VRP)</strong> - the empirical phenomenon where 
+                implied volatility (from options markets) systematically exceeds realized volatility (from actual returns). 
+                The goal was to investigate whether this premium exists in S&P 500 data and whether timing mechanisms 
+                add value beyond passive short-variance exposure.
+            </p>
+            <p>
+                Using 15 years of S&P 500 and VIX data, I built a proxy framework to simulate variance swap payoffs and 
+                tested three different strategies: a baseline approach, an improved version with exit rules, and an 
+                always-on exposure benchmark.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>Methodology</h2>
+            
+            <h3>What is VRP?</h3>
+            <p>The variance risk premium represents the gap between:</p>
+            <ul>
+                <li><strong>Implied Variance:</strong> Market expectations backed out from VIX (30-day implied volatility)</li>
+                <li><strong>Realized Variance:</strong> Actual volatility calculated from squared log returns</li>
+            </ul>
+            
+            <div class="highlight-box">
+                <strong>Key Hypothesis:</strong> If implied variance consistently exceeds realized variance, 
+                selling variance (being short volatility) should generate positive returns on average, 
+                compensating investors for bearing tail risk.
+            </div>
+            
+            <h3>Approach</h3>
+            <p>Since I didn't have access to actual variance swap data, I used a proxy methodology:</p>
+            <ul>
+                <li>VIX as proxy for 30-day implied volatility</li>
+                <li>21-day rolling window for realized volatility calculations</li>
+                <li>Simulated short variance positions with entry/exit rules</li>
+                <li>Compared three strategies: Baseline, Improved (with exits), and Always-On</li>
+            </ul>
+            
+            <h3>Risk Controls Implemented</h3>
+            <ul>
+                <li>VIX threshold filters to avoid entering during extreme volatility</li>
+                <li>Stop-loss mechanisms based on cumulative P&L</li>
+                <li>Position sizing based on normalized VRP z-scores</li>
+                <li>Early exit triggers when VRP turns negative</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Key Findings</h2>
+            
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="label">VRP Positive Periods</div>
+                    <div class="value">~65%</div>
+                    <div class="label">of trading days</div>
+                </div>
+                <div class="result-card">
+                    <div class="label">Always-On Contribution</div>
+                    <div class="value">~90%</div>
+                    <div class="label">of total returns</div>
+                </div>
+                <div class="result-card">
+                    <div class="label">Bug Impact</div>
+                    <div class="value">-60%</div>
+                    <div class="label">Sharpe after fixes</div>
+                </div>
+            </div>
+            
+            <h3>1. VRP Exists in the Data</h3>
+            <p>
+                Implied variance exceeded realized variance in roughly 65% of periods, confirming the theoretical 
+                prediction that variance sellers earn a premium for bearing tail risk. The premium was particularly 
+                pronounced during calm market periods (2012-2019).
+            </p>
+            
+            <h3>2. Implementation Details Matter Critically</h3>
+            <div class="highlight-box">
+                <strong>Critical Discovery:</strong> The initial backtest had two significant bugs:
+                <ul style="margin-top: 10px;">
+                    <li><strong>Lookahead bias in exit logic:</strong> Exit decisions were using future information</li>
+                    <li><strong>Incorrect variance annualization:</strong> When positions closed early, realized variance 
+                    was being annualized incorrectly, using the full holding period instead of actual days held</li>
+                </ul>
+                These bugs inflated the Sharpe ratio by approximately 60%. After fixes, results became much more realistic.
+            </div>
+            
+            <h3>3. Timing Adds Limited Alpha</h3>
+            <p>
+                The most surprising finding: <strong>being always short variance captured ~90% of the total returns.</strong> 
+                The sophisticated entry/exit rules primarily helped with:
+            </p>
+            <ul>
+                <li>Reducing maximum drawdown (from -60% to -45%)</li>
+                <li>Improving risk-adjusted metrics slightly</li>
+                <li>Avoiding some of the worst periods (March 2020, volmageddon)</li>
+            </ul>
+            <p>
+                But they didn't materially increase absolute returns. This suggests the edge is primarily in the 
+                <strong>beta exposure to VRP</strong>, not in clever timing.
+            </p>
+            
+            <h3>4. Crisis Periods Dominate Risk</h3>
+            <p>
+                The strategy's worst performance occurred during:
+            </p>
+            <ul>
+                <li><strong>March 2020 (COVID):</strong> Single worst day lost 60% of cumulative gains</li>
+                <li><strong>Feb 2018 (Volmageddon):</strong> Rapid VIX spike caused significant drawdown</li>
+                <li><strong>Q4 2018:</strong> Fed tightening concerns created persistent volatility</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Technical Challenges</h2>
+            
+            <h3>Debugging the Backtest</h3>
+            <p>The most valuable learning came from debugging the initial implementation:</p>
+            <ul>
+                <li><strong>Lookahead bias:</strong> Exit logic was checking if <code>VRP_t+1 < 0</code> instead of <code>VRP_t < 0</code></li>
+                <li><strong>Annualization error:</strong> Used formula <code>RV = sqrt(252/H * sum(returns^2))</code> even when 
+                holding period was less than H days</li>
+                <li><strong>Verification:</strong> Cross-checked results against crisis periods manually to ensure P&L made sense</li>
+            </ul>
+            
+            <h3>Feature Engineering</h3>
+            <ul>
+                <li>Calculated 21-day rolling realized volatility</li>
+                <li>Computed VRP in variance units (IV² - RV²)</li>
+                <li>Created z-score normalized signals using 126-day rolling window</li>
+                <li>Generated binary entry/exit flags based on VRP regime</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Limitations</h2>
+            
+            <p><strong>1. Proxy Methodology</strong></p>
+            <ul>
+                <li>VIX is not a tradeable variance swap strike</li>
+                <li>No access to actual option surfaces or variance swap curves</li>
+                <li>Cannot model proper mark-to-market on early exits</li>
+                <li>Missing term structure, skew, and convexity effects</li>
+            </ul>
+            
+            <p><strong>2. P&L in Variance Points, Not Dollars</strong></p>
+            <ul>
+                <li>Results shown in variance points per unit notional</li>
+                <li>No margin framework or capital requirements modeled</li>
+                <li>Execution costs, dealer spreads, and slippage not included</li>
+                <li>Cannot directly translate to portfolio returns without sizing assumptions</li>
+            </ul>
+            
+            <p><strong>3. Tail Risk</strong></p>
+            <ul>
+                <li>Short volatility strategies can experience catastrophic losses</li>
+                <li>March 2020 and February 2018 demonstrated this clearly</li>
+                <li>Small implementation errors can drastically change outcomes</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>Lessons Learned</h2>
+            
+            <ul>
+                <li><strong>Verify, verify, verify:</strong> Small coding errors can create massive fake alpha in volatility strategies</li>
+                <li><strong>Crisis tests are essential:</strong> Always manually check how strategies performed in known crisis periods</li>
+                <li><strong>Beta vs alpha:</strong> Most "sophisticated" timing overlays don't beat simple exposure in volatility selling</li>
+                <li><strong>Proxy limitations:</strong> Without proper data, conclusions must be appropriately hedged</li>
+                <li><strong>Documentation matters:</strong> Clear explanation of assumptions and limitations is as important as the results</li>
+            </ul>
+        </div>
+        
+        <div class="buttons">
+            <a href="VRP_Strategy_Complete_Notebook__1_.html" class="btn btn-primary">View Full Notebook (HTML)</a>
+            <a href="https://github.com/yourusername/vrp-strategy" class="btn btn-secondary" target="_blank">GitHub Repository</a>
+            <a href="index.html" class="btn btn-secondary">Back to Projects</a>
+        </div>
+    </div>
+</body>
+</html>

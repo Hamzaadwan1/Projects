@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantitative Finance Projects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+        
+        .subtitle {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .projects {
+            display: grid;
+            gap: 30px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+        }
+        
+        .project-title {
+            font-size: 1.8em;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+        
+        .project-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .tech-tag {
+            background: #e9ecef;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: #495057;
+        }
+        
+        .project-description {
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .key-findings {
+            margin: 20px 0;
+        }
+        
+        .key-findings h3 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        
+        .key-findings ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-findings li {
+            padding-left: 24px;
+            margin-bottom: 8px;
+            position: relative;
+            color: #555;
+        }
+        
+        .key-findings li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 2px solid;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background: #0056b3;
+            border-color: #0056b3;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #007bff;
+            border-color: #007bff;
+        }
+        
+        .btn-secondary:hover {
+            background: #f8f9fa;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #dee2e6;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            
+            .project-title {
+                font-size: 1.4em;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Quantitative Finance Projects</h1>
+            <p class="subtitle">Exploring market inefficiencies and portfolio optimization</p>
+        </header>
+        
+        <div class="projects">
+            <!-- VRP Project -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h2 class="project-title">Variance Risk Premium Strategy</h2>
+                        <p class="project-date">January 2025</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">NumPy</span>
+                    <span class="tech-tag">Matplotlib</span>
+                    <span class="tech-tag">yfinance</span>
+                </div>
+                
+                <p class="project-description">
+                    Investigated the variance risk premium phenomenon using 15 years of S&P 500 and VIX data. 
+                    Built a proxy framework to simulate short-variance exposure and tested whether timing mechanisms 
+                    add value beyond passive exposure to the premium.
+                </p>
+                
+                <div class="key-findings">
+                    <h3>Key Findings</h3>
+                    <ul>
+                        <li>Demonstrated VRP exists consistently: implied variance exceeded realized variance in majority of periods</li>
+                        <li>Debugged critical backtesting errors (lookahead bias, incorrect annualization) that inflated initial Sharpe ratio</li>
+                        <li>Found timing mechanisms primarily affected risk profile rather than returns; always-on exposure captured ~90% of total gains</li>
+                        <li>Documented limitations of proxy-based approach without access to actual variance swap curves</li>
+                    </ul>
+                </div>
+                
+                <div class="buttons">
+                    <a href="vrp_project.html" class="btn btn-primary">View Project Details</a>
+                    <a href="https://github.com/yourusername/vrp-strategy" class="btn btn-secondary" target="_blank">GitHub Repository</a>
+                </div>
+            </div>
+            
+            <!-- Portfolio Optimizer Project -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h2 class="project-title">Portfolio Optimization Analysis</h2>
+                        <p class="project-date">November 2024 - December 2024</p>
+                    </div>
+                </div>
+                
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Pandas</span>
+                    <span class="tech-tag">NumPy</span>
+                    <span class="tech-tag">SciPy</span>
+                    <span class="tech-tag">yfinance</span>
+                </div>
+                
+                <p class="project-description">
+                    Tested whether mean-variance optimization can produce repeatable out-of-sample edge. 
+                    Implemented Sharpe ratio maximization on a diversified ETF basket, comparing daily-rebalanced 
+                    vs buy-and-hold approaches across train/test splits.
+                </p>
+                
+                <div class="key-findings">
+                    <h3>Key Findings</h3>
+                    <ul>
+                        <li>Optimized portfolio achieved 3.04% outperformance vs S&P 500 in-sample (2018-2021)</li>
+                        <li>Out-of-sample performance degraded significantly due to mean reversion and correlation shifts</li>
+                        <li>Diagnosed overfitting through regime analysis: parameter estimates unstable across periods</li>
+                        <li>Demonstrated importance of walk-forward testing and realistic expectations for mean-variance approaches</li>
+                    </ul>
+                </div>
+                
+                <div class="buttons">
+                    <a href="portfolio_project.html" class="btn btn-primary">View Project Details</a>
+                    <a href="https://github.com/yourusername/portfolio-optimization" class="btn btn-secondary" target="_blank">GitHub Repository</a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Built with HTML & CSS • <a href="https://github.com/yourusername" target="_blank" style="color: #007bff; text-decoration: none;">GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
